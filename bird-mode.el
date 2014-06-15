@@ -44,7 +44,8 @@
              (and (pos-visible-in-window-p (point-max))
                   (bird-view-bottom-bounce)))
          (forward-line -2))
-        (t (mwheel-scroll event)))
+        (t (let ((mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))))
+             (mwheel-scroll event))))
   (bird-view))
 
 (defun bird-mwheel-scroll-down (event)
@@ -53,7 +54,8 @@
              (and (pos-visible-in-window-p (point-min))
                   (bird-view-top-bounce)))
          (forward-line 2))
-        (t (mwheel-scroll event)))
+        (t (let ((mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))))
+             (mwheel-scroll event))))
   (bird-view))
 
 (defun bird-cua-scroll-up (&optional arg)
@@ -155,8 +157,10 @@
             
             (define-key map (kbd "<mouse-4>") 'bird-mwheel-scroll-up)
             (define-key map (kbd "S-<mouse-4>") 'bird-mwheel-scroll-up)
+            (define-key map (kbd "C-<mouse-4>") 'bird-mwheel-scroll-up)
             (define-key map (kbd "<mouse-5>") 'bird-mwheel-scroll-down)
             (define-key map (kbd "S-<mouse-5>") 'bird-mwheel-scroll-down)
+            (define-key map (kbd "C-<mouse-5>") 'bird-mwheel-scroll-down)
             
             (define-key map (kbd "<prior>") 'bird-cua-scroll-down)
             (define-key map (kbd "S-<prior>") 'bird-cua-scroll-down)
@@ -177,11 +181,13 @@
         (when bird-view-overlay
           (delete-overlay bird-view-overlay)
           (setq bird-view-overlay nil))
-        (text-scale-set 0))
+        (text-scale-set 0)
+        (scroll-lock-mode 0))
     (setq bird-point (point))
     (bird-view)
     (text-scale-set bird-scale)
     (recenter)
+    (scroll-lock-mode t)
     ))
 
 (provide 'bird-mode)
