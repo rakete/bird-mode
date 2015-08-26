@@ -134,11 +134,12 @@
                            (point-at-bol))
               view-end (point-max)))
       (setq bird-view-overlay (make-overlay view-start view-end))
-      (overlay-put bird-view-overlay 'face '((:background "#333333")))
-      (overlay-put bird-view-overlay 'last-point (save-excursion
-                                                   (goto-char (overlay-start bird-view-overlay))
-                                                   (forward-line (/ (count-lines (overlay-start bird-view-overlay) (overlay-end bird-view-overlay)) 2))
-                                                   (point-at-bol))))))
+      (let ((ov-bg (color-darken-name (face-attribute 'default :background) 10)))
+        (overlay-put bird-view-overlay 'face `((:background ,ov-bg)))
+        (overlay-put bird-view-overlay 'last-point (save-excursion
+                                                     (goto-char (overlay-start bird-view-overlay))
+                                                     (forward-line (/ (count-lines (overlay-start bird-view-overlay) (overlay-end bird-view-overlay)) 2))
+                                                     (point-at-bol)))))))
 
 (define-minor-mode bird-mode
   "Birds view perspective for your code"
@@ -154,14 +155,14 @@
             (define-key map (kbd "<RET>") 'bird-kbd-set-point)
             (define-key map (kbd "<escape>") 'bird-restore-point)
             (define-key map (kbd "q") 'bird-restore-point)
-            
+
             (define-key map (kbd "<mouse-4>") 'bird-mwheel-scroll-up)
             (define-key map (kbd "S-<mouse-4>") 'bird-mwheel-scroll-up)
             (define-key map (kbd "C-<mouse-4>") 'bird-mwheel-scroll-up)
             (define-key map (kbd "<mouse-5>") 'bird-mwheel-scroll-down)
             (define-key map (kbd "S-<mouse-5>") 'bird-mwheel-scroll-down)
             (define-key map (kbd "C-<mouse-5>") 'bird-mwheel-scroll-down)
-            
+
             (define-key map (kbd "<prior>") 'bird-cua-scroll-down)
             (define-key map (kbd "S-<prior>") 'bird-cua-scroll-down)
             (define-key map (kbd "<next>") 'bird-cua-scroll-up)
@@ -171,7 +172,7 @@
             (define-key map (kbd "S-<down>") 'bird-next-line)
             (define-key map (kbd "<up>") 'bird-previous-line)
             (define-key map (kbd "S-<up>") 'bird-previous-line)
-            
+
             (define-key map (kbd "C-+") 'text-scale-adjust)
             (define-key map (kbd "C--") 'text-scale-adjust)
             map)
