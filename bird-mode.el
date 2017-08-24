@@ -155,6 +155,7 @@
             (define-key map (kbd "<RET>") 'bird-kbd-set-point)
             (define-key map (kbd "<escape>") 'bird-restore-point)
             (define-key map (kbd "q") 'bird-restore-point)
+            (define-key map (kbd "C-g") 'bird-restore-point)
 
             (define-key map (kbd "<mouse-4>") 'bird-mwheel-scroll-up)
             (define-key map (kbd "S-<mouse-4>") 'bird-mwheel-scroll-up)
